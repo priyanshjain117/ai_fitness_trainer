@@ -1,156 +1,200 @@
-import 'package:ai_trainer/exercise_progress_card.dart';
-import 'package:ai_trainer/workout_category_card.dart';
+import 'package:ai_trainer/screens/dashboard_screen.dart';
+import 'package:ai_trainer/screens/pose_detection_screen.dart';
+import 'package:ai_trainer/screens/settings_screen.dart';
+import 'package:ai_trainer/widgets/exercise_progress_card.dart';
+import 'package:ai_trainer/widgets/workout_category_card.dart';
 import 'package:flutter/material.dart';
-
-// --- DATA MODEL (Simplified for UI) ---
-class WorkoutData {
-  final String title;
-  final String subTitle;
-  final double formScore; // 0.0 to 1.0
-  final IconData icon;
-  final Color color;
-  final String levelDetail;
-
-  WorkoutData({
-    required this.title,
-    required this.subTitle,
-    required this.formScore,
-    required this.icon,
-    required this.color,
-    required this.levelDetail,
-  });
-}
-
-// --- MAIN SCREEN WIDGET ---
-class HomeScreen extends StatelessWidget {
-  // Mock data to populate the cards
-  final List<WorkoutData> primaryWorkouts = [
-    WorkoutData(
-      title: 'Strength',
-      subTitle: '75% Perfect Form Average',
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../models/user_data.dart';
+// Placeholder/Simulated User Data
+UserData _mockUserData = UserData(
+  name: 'Alex',
+  overallFormScore: 0.78,
+  formConsistencyDays: 7,
+  currentFocus: 'Improve Squat Depth',
+  focusDetail: 'Start 30-min Form Session',
+  exercises: {
+    'Strength': ExerciseData(
+      category: 'Strength',
       formScore: 0.75,
+      level: 'Advanced Beginner',
+      perfectReps: 0,
+      nextGoal: 'Next Badge: Level Up!',
       icon: Icons.fitness_center,
       color: Colors.blueAccent,
-      levelDetail: 'Next Badge: Level Up!',
     ),
-    WorkoutData(
-      title: 'Yoga',
-      subTitle: 'Focus on Balance & Stability',
+    'Yoga': ExerciseData(
+      category: 'Yoga',
       formScore: 0.85,
+      level: 'Intermediate',
+      perfectReps: 0,
+      nextGoal: 'Next Badge: Unlock Tree Pose',
       icon: Icons.self_improvement,
       color: Colors.pinkAccent,
-      levelDetail: 'Next Badge: Unlock Tree Pose',
     ),
-  ];
-
-  final List<WorkoutData> specificWorkouts = [
-    WorkoutData(
-      title: 'Squats',
-      subTitle: '80% Form Score | 15 Perfect Reps',
+    'Squats': ExerciseData(
+      category: 'Squats',
       formScore: 0.80,
+      level: 'Intermediate',
+      perfectReps: 15,
+      nextGoal: 'Perfect: 15 / Needs Practice: 3',
       icon: Icons.accessibility_new,
       color: const Color(0xFF673AB7), // Dark Purple
-      levelDetail: 'Lv: Intermediate',
     ),
-    WorkoutData(
-      title: 'Push-ups',
-      subTitle: '50% Form Score | Needs Practice',
+    'PushUps': ExerciseData(
+      category: 'PushUps',
       formScore: 0.50,
+      level: 'Beginner',
+      perfectReps: 5,
+      nextGoal: 'Perfect: 5 / Needs Practice: 10',
       icon: Icons.directions_run,
       color: const Color(0xFF4CAF50), // Green
-      levelDetail: 'Lv: Beginner',
     ),
-  ];
+  },
+);
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late UserData userData;
+
+  @override
+  void initState() {
+    super.initState();
+    userData = _mockUserData;
+    _simulateDataUpdate(); 
+  }
+
+  // A method to simulate dynamic updates from your AI backend/service
+  void _simulateDataUpdate() {
+    Future.delayed(const Duration(seconds: 5), () {
+      if (!mounted) return;
+      setState(() {
+        userData.formConsistencyDays = 8;
+        userData.overallFormScore = 0.82;
+        userData.currentFocus = 'Perfect Push-up Form';
+        userData.focusDetail = 'Recommended: 20-min Upper Body Session';
+        
+        userData.exercises['PushUps']!.formScore = 0.70;
+        userData.exercises['PushUps']!.level = 'Intermediate';
+        userData.exercises['PushUps']!.perfectReps = 15;
+        userData.exercises['PushUps']!.nextGoal = 'Perfect: 15 / Needs Practice: 2';
+      });
+      print('UI Updated Dynamically!');
+    });
+  }
+
+  // Navigation handler
+  void _navigateToWorkout(String exerciseName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PoseDetectionScreen(exerciseName: exerciseName),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<ExerciseData> primaryWorkouts = [
+      userData.exercises['Strength']!,
+      userData.exercises['Yoga']!,
+    ];
+    List<ExerciseData> specificWorkouts = [
+      userData.exercises['Squats']!,
+      userData.exercises['PushUps']!,
+    ];
+
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), // Dark Background
+      backgroundColor: const Color(0xFF121212),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // --- Header ---
-              _buildHeader(),
-              const SizedBox(height: 25),
+              _buildHeader(userData.name),
+              SizedBox(height: 25.h),
 
-              // --- Today's Focus Card (Personalization) ---
-              _buildFocusCard(),
-              const SizedBox(height: 30),
+              // CLICKABLE: Focus Card navigates to the core feature
+              GestureDetector(
+                onTap: () => _navigateToWorkout(userData.currentFocus),
+                child: _buildFocusCard(userData),
+              ),
+              SizedBox(height: 30.h),
 
-              // --- Choose Your Workout ---
-              const Text(
+              Text(
                 'Choose Your Workout',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
 
-              // --- Primary Workout Cards (Strength/Yoga) ---
-              _buildPrimaryWorkoutGrid(),
-              const SizedBox(height: 20),
+              // Primary Workout Cards Grid (CLICKABLE)
+              _buildPrimaryWorkoutGrid(primaryWorkouts),
+              SizedBox(height: 20.h),
 
-              // --- Specific Exercise Cards (Squats/Push-ups) ---
-              _buildSpecificWorkoutGrid(),
+              // Specific Exercise Cards Grid (CLICKABLE)
+              _buildSpecificWorkoutGrid(specificWorkouts),
             ],
           ),
         ),
       ),
-      // --- Bottom Navigation and CTA ---
       bottomNavigationBar: _buildBottomBar(context),
     );
   }
   
-  // --- Header Widget ---
-  Widget _buildHeader() {
+  Widget _buildHeader(String userName) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        const Text(
-          'AI Gym Trainer',
+        Text(
+          'Hello, $userName!',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 26,
+            fontSize: 26.sp,
             fontWeight: FontWeight.bold,
           ),
         ),
-        // User Avatar
-        Container(
-          width: 45,
-          height: 45,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
-            image: const DecorationImage(
-              image: AssetImage('assets/trainer_avatar.png'), // Placeholder
-              fit: BoxFit.cover,
+        // User Avatar Placeholder (CLICKABLE to Dashboard)
+        GestureDetector(
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen())),
+          child: Container(
+            width: 45.w,
+            height: 45.w,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.r),
             ),
+            child: const Icon(Icons.person, color: Colors.black),
           ),
         ),
       ],
     );
   }
 
-  // --- Focus Card Widget (PS #12: Personalized Progress Analytics) ---
-  Widget _buildFocusCard() {
+  Widget _buildFocusCard(UserData data) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r),
         gradient: const LinearGradient(
-          colors: [Color(0xFF673AB7), Color(0xFF9C27B0)], // Purple Gradient
+          colors: [Color(0xFF673AB7), Color(0xFF9C27B0)], 
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.purple.withOpacity(0.3),
-            blurRadius: 10,
+            blurRadius: 10.r,
             offset: const Offset(0, 5),
           ),
         ],
@@ -158,111 +202,136 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Today's AI Focus",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Today's AI Focus",
+                  style: TextStyle(color: Colors.white70, fontSize: 16.sp),
                 ),
+                SizedBox(height: 5.h),
+                Text(
+                  '${data.currentFocus} - ${data.focusDetail}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'Form Streak:',
+                style: TextStyle(color: Colors.white70, fontSize: 12.sp),
               ),
-              const SizedBox(height: 5),
-              const Text(
-                'Improve Squat Depth - 30-min Session',
+              Text(
+                '${data.formConsistencyDays} Days',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF00FF88), 
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
-          ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white70,
-            size: 18,
           ),
         ],
       ),
     );
   }
 
-  // --- Primary Workout Grid ---
-  Widget _buildPrimaryWorkoutGrid() {
+  Widget _buildPrimaryWorkoutGrid(List<ExerciseData> workouts) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: primaryWorkouts
+      children: workouts
           .map((data) => Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(
-                      right: data.title == 'Strength' ? 10.0 : 0.0),
-                  child: WorkoutCategoryCard(data: data),
+                      right: data.category == 'Strength' ? 10.w : 0.w),
+                  // CLICKABLE: Workout Category Card
+                  child: GestureDetector(
+                    onTap: () => _navigateToWorkout(data.category),
+                    child: WorkoutCategoryCard(data: data),
+                  ),
                 ),
               ))
           .toList(),
     );
   }
 
-  // --- Specific Workout Grid ---
-  Widget _buildSpecificWorkoutGrid() {
+  Widget _buildSpecificWorkoutGrid(List<ExerciseData> workouts) {
     return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(), // Important for nested scrolling
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-        childAspectRatio: 0.9,
+        crossAxisSpacing: 10.w,
+        mainAxisSpacing: 10.h, // Adjusted for responsiveness
+        childAspectRatio: 0.85, // Adjusted for responsiveness
       ),
-      itemCount: specificWorkouts.length,
+      itemCount: workouts.length,
       itemBuilder: (context, index) {
-        return ExerciseProgressCard(data: specificWorkouts[index]);
+        // CLICKABLE: Specific Exercise Card
+        return GestureDetector(
+          onTap: () => _navigateToWorkout(workouts[index].category),
+          child: ExerciseProgressCard(data: workouts[index]), 
+        );
       },
     );
   }
 
-  // --- Bottom Navigation Bar ---
   Widget _buildBottomBar(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF1E1E1E), // Slightly lighter dark color
+        color: Color(0xFF1E1E1E),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black45,
-            blurRadius: 10,
-          ),
+          BoxShadow(color: Colors.black45, blurRadius: 10),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          const Icon(Icons.home, color: Colors.greenAccent, size: 30),
-          const Icon(Icons.trending_up, color: Colors.grey, size: 30),
-          // --- Start Workout CTA (Form Correction/Audio Feedback) ---
+          // Home Button
+          Icon(Icons.home, color: const Color(0xFF00FF88), size: 30.sp),
+          
+          // Dashboard Button (Trending Up)
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen())),
+            child: Icon(Icons.trending_up, color: Colors.grey, size: 30.sp),
+          ),
+          
+          // --- Start Workout CTA ---
           SizedBox(
-            height: 60,
+            height: 60.h,
             child: FloatingActionButton.extended(
-              onPressed: () {
-                // TODO: Navigate to Camera/Form Detection Screen
-                print('Starting workout...');
-              },
-              backgroundColor: const Color(0xFF00FF88), // Bright Green
-              icon: const Icon(Icons.videocam, color: Colors.black),
-              label: const Text(
+              onPressed: () => _navigateToWorkout(userData.currentFocus), // Navigates to the core feature
+              backgroundColor: const Color(0xFF00FF88), 
+              icon: Icon(Icons.videocam, color: Colors.black, size: 24.sp),
+              label: Text(
                 'Start Workout',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                 ),
               ),
             ),
           ),
-          const Icon(Icons.person, color: Colors.grey, size: 30),
-          const Icon(Icons.settings, color: Colors.grey, size: 30),
+          // Profile (Person Icon) - already handled by the header icon
+          Icon(Icons.person, color: Colors.grey, size: 30.sp),
+          
+          // Settings Button
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen())),
+            child: Icon(Icons.settings, color: Colors.grey, size: 30.sp),
+          ),
         ],
       ),
     );
