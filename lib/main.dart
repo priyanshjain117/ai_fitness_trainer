@@ -1,10 +1,14 @@
 import 'package:ai_trainer/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart'; 
+import 'controllers/settings_controller.dart'; 
 
 void main() {
-  // Ensure the camera plugin can be used
   WidgetsFlutterBinding.ensureInitialized();
+
+  Get.put(SettingsController()); 
+  
   runApp(const TrainerApp());
 }
 
@@ -13,13 +17,12 @@ class TrainerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize ScreenUtil using a common design size (e.g., 393x852 for modern screens)
     return ScreenUtilInit(
-      designSize: const Size(393, 852),
+      designSize: const Size(393, 852), 
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+        return GetMaterialApp(
           title: 'AI Gym Trainer',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -34,3 +37,4 @@ class TrainerApp extends StatelessWidget {
     );
   }
 }
+
