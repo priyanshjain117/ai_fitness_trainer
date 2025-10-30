@@ -1,4 +1,5 @@
 import 'package:ai_trainer/screens/dashboard_screen.dart';
+import 'package:ai_trainer/screens/diet_planner_screen.dart';
 import 'package:ai_trainer/screens/pose_detection_screen.dart';
 import 'package:ai_trainer/screens/settings_screen.dart';
 import 'package:ai_trainer/widgets/exercise_progress_card.dart';
@@ -325,7 +326,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           // Profile (Person Icon) - already handled by the header icon
-          Icon(Icons.person, color: Colors.grey, size: 30.sp),
+          // Icon(Icons.person, color: Colors.grey, size: 30.sp),
+          GestureDetector(
+          // Update the builder to point to your new screen
+            onTap: () => Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => const DietPlannerScreen())
+            ),
+            child: Icon(Icons.restaurant_menu, color: Colors.grey, size: 30.sp),
+          ),
           
           // Settings Button
           GestureDetector(
