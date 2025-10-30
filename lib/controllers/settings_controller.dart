@@ -7,19 +7,19 @@ class SettingsController extends GetxController {
   var useFrontCamera = true.obs;
   var useAccurateModel = false.obs;
 
-  // // Methods to update the values
-  // void toggleAudioFeedback(bool val) {
-  //   audioFeedbackEnabled.value = val;
-  //   // TODO: Save this value to local storage (like GetStorage)
-  // }
+  // Methods to update the values
+  void toggleAudioFeedback(bool val) {
+    audioFeedbackEnabled.value = val;
+    // TODO: Save this value to local storage (like GetStorage)
+  }
 
   void toggleFrontCamera(bool val) {
     useFrontCamera.value = val;
     // TODO: Save this value
   }
 
-  // void toggleAccurateModel(bool val) {
-  //   useAccurateModel.value = val;
-  //   // TODO: Save this value
-  // }
+  void toggleAccurateModel(bool val) {
+    useAccurateModel.value = val;
+    // TODO: Save this value
+  }
 }
