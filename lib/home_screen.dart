@@ -1,6 +1,7 @@
 import 'package:ai_trainer/screens/dashboard_screen.dart';
 import 'package:ai_trainer/screens/diet_planner_screen.dart';
 import 'package:ai_trainer/screens/pose_detection_screen.dart';
+import 'package:ai_trainer/screens/profile_screen.dart';
 import 'package:ai_trainer/screens/settings_screen.dart';
 import 'package:ai_trainer/widgets/exercise_progress_card.dart';
 import 'package:ai_trainer/widgets/workout_category_card.dart';
@@ -167,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         // User Avatar Placeholder (CLICKABLE to Dashboard)
         GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen())),
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen())),
           child: Container(
             width: 45.w,
             height: 45.w,
