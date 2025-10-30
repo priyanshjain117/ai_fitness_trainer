@@ -1,5 +1,6 @@
 import 'package:ai_trainer/screens/dashboard_screen.dart';
 import 'package:ai_trainer/screens/diet_planner_screen.dart';
+import 'package:ai_trainer/screens/exercise_list_screen.dart';
 import 'package:ai_trainer/screens/pose_detection_screen.dart';
 import 'package:ai_trainer/screens/profile_screen.dart';
 import 'package:ai_trainer/screens/settings_screen.dart';
@@ -39,7 +40,7 @@ UserData _mockUserData = UserData(
       formScore: 0.80,
       level: 'Intermediate',
       perfectReps: 15,
-      nextGoal: 'Perfect: 15 / Needs Practice: 3',
+      nextGoal: 'Perfect: 15 \n Needs Practice: 3',
       icon: Icons.accessibility_new,
       color: const Color(0xFF673AB7), // Dark Purple
     ),
@@ -48,7 +49,7 @@ UserData _mockUserData = UserData(
       formScore: 0.50,
       level: 'Beginner',
       perfectReps: 5,
-      nextGoal: 'Perfect: 5 / Needs Practice: 10',
+      nextGoal: 'Perfect: 5 \nNeeds Practice: 10',
       icon: Icons.directions_run,
       color: const Color(0xFF4CAF50), // Green
     ),
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
         userData.exercises['PushUps']!.formScore = 0.70;
         userData.exercises['PushUps']!.level = 'Intermediate';
         userData.exercises['PushUps']!.perfectReps = 15;
-        userData.exercises['PushUps']!.nextGoal = 'Perfect: 15 / Needs Practice: 2';
+        userData.exercises['PushUps']!.nextGoal = 'Perfect: 15 \n Needs Practice: 2';
       });
       print('UI Updated Dynamically!');
     });
@@ -258,7 +259,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       right: data.category == 'Strength' ? 10.w : 0.w),
                   // CLICKABLE: Workout Category Card
                   child: GestureDetector(
-                    onTap: () => _navigateToWorkout(data.category),
+                    onTap:() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => 
+                            ExerciseListScreen(categoryName: data.category),
+                        ),
+                      );
+                    },
+                    // () => _navigateToWorkout(data.category),
                     child: WorkoutCategoryCard(data: data),
                   ),
                 ),

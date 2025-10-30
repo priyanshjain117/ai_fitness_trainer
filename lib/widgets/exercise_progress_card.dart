@@ -10,6 +10,7 @@ class ExerciseProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration( 
@@ -21,6 +22,7 @@ class ExerciseProgressCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // Placeholder Icon/Image
+
           Container(
             height: 85.h,
             width: double.infinity,
@@ -43,6 +45,7 @@ class ExerciseProgressCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              // SizedBox(width: 16.w),
               // Circular Progress Indicator for Form Score
               CircularPercentIndicator(
                 radius: 20.r,
@@ -55,10 +58,11 @@ class ExerciseProgressCard extends StatelessWidget {
                 progressColor: data.color,
                 backgroundColor: Colors.grey.shade700,
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: 10.w),
               
               Expanded(
-                child: Column(
+                child: 
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
