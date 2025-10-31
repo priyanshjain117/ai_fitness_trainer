@@ -21,8 +21,6 @@ class ExerciseProgressCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Placeholder Icon/Image
-
           Container(
             height: 85.h,
             width: double.infinity,
@@ -46,7 +44,6 @@ class ExerciseProgressCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               // SizedBox(width: 16.w),
-              // Circular Progress Indicator for Form Score
               CircularPercentIndicator(
                 radius: 20.r,
                 lineWidth: 4.w,

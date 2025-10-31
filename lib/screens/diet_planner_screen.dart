@@ -13,7 +13,7 @@ class DietPlannerScreen extends StatefulWidget {
 }
 
 class _DietPlannerScreenState extends State<DietPlannerScreen> {
-  // Default goal is "Maintain"
+
   DietGoal _selectedGoal = DietGoal.maintain;
 
   @override
@@ -50,7 +50,6 @@ class _DietPlannerScreenState extends State<DietPlannerScreen> {
             _buildGoalSelector(),
             SizedBox(height: 30.h),
             
-            // This widget will dynamically build the rest of the page
             _buildDietDetails(),
           ],
         ),
@@ -74,7 +73,6 @@ Widget _buildGoalSelector() {
   );
 }
 
-  /// Helper widget for a single goal chip
   Widget _buildGoalChip(DietGoal goal, String label, IconData icon) {
     final bool isSelected = _selectedGoal == goal;
     return ChoiceChip(
@@ -227,7 +225,7 @@ Widget _buildGoalSelector() {
     );
   }
 
-  /// Builds a single card for a meal (e.g., Breakfast)
+
   Widget _buildMealCard(String title, List<String> items, IconData icon) {
     return Card(
       color: const Color(0xFF1E1E1E), // Dark card color

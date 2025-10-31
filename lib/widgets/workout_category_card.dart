@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../models/user_data.dart';
 
-// --- 1. WorkoutCategoryCard (Large Card for Strength/Yoga) ---
 class WorkoutCategoryCard extends StatelessWidget {
   final ExerciseData data;
 
@@ -43,8 +42,6 @@ class WorkoutCategoryCard extends StatelessWidget {
             valueColor: AlwaysStoppedAnimation<Color>(accentColor),
           ),
           SizedBox(height: 5.h),
-
-          // Subtitle showing the form average
           Text(
             '${(data.formScore * 100).toInt()}% Perfect Form Average',
             style: TextStyle(
@@ -52,8 +49,6 @@ class WorkoutCategoryCard extends StatelessWidget {
               fontSize: 12.sp,
             ),
           ),
-
-          // Next Goal/Badge Detail
           Text(
             data.nextGoal, 
             style: TextStyle(

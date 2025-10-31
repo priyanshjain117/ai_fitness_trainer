@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ai_trainer/screens/pose_detection_screen.dart'; // To start the workout
-
-// Mock data for the exercise lists
-// In a real app, this would come from your UserData model or a database
+import 'package:ai_trainer/screens/pose_detection_screen.dart'; 
 const Map<String, List<Map<String, dynamic>>> exerciseCategoryData = {
   'Strength': [
     {'name': 'Squats', 'icon': Icons.accessibility_new, 'duration': '5 min'},
@@ -25,7 +22,6 @@ class ExerciseListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the list of exercises for the selected category
     final List<Map<String, dynamic>> exercises = 
         exerciseCategoryData[categoryName] ?? [];
 
@@ -60,7 +56,6 @@ class ExerciseListScreen extends StatelessWidget {
     );
   }
 
-  /// Builds a single clickable exercise tile
   Widget _buildExerciseTile({
     required BuildContext context,
     required String name,
@@ -101,7 +96,6 @@ class ExerciseListScreen extends StatelessWidget {
           size: 35.sp,
         ),
         onTap: () {
-          // Navigate to the AI Pose Detection Screen with the *specific* exercise
           Navigator.push(
             context,
             MaterialPageRoute(
