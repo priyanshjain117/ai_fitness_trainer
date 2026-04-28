@@ -6,7 +6,7 @@ import 'package:google_mlkit_pose_detection/google_mlkit_pose_detection.dart';
 import '../models/exercise_state.dart';
 
 class PosePainter extends CustomPainter {
-  PosePainter(
+  const PosePainter(
     this.poses,
     this.imageSize,
     this.cameraLensDirection,
