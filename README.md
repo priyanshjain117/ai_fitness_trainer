@@ -1,6 +1,5 @@
-# AI Trainer
-
-## 🚀 Smart AI Gym Trainer
+# FormaAI 
+## 🚀 AI-Powered Gym Trainer
 
 **AI Trainer** is a Flutter-based workout companion that brings live pose detection, form feedback, and fitness planning into a single mobile experience. It helps users track exercise quality, choose workouts, and follow tailored diet guidance while providing an intuitive dark-themed interface.
 
